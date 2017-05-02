@@ -90,10 +90,6 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Items.AddRange(new object[] {
-            "1. Lucifer_Power",
-            "2. Brian_Devis",
-            "3. Jhon_Kramer"});
             this.listBox1.Location = new System.Drawing.Point(13, 39);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(290, 212);
