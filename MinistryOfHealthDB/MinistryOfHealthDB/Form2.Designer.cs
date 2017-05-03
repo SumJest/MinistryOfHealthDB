@@ -105,6 +105,7 @@
             // 
             // button6
             // 
+            this.button6.Enabled = false;
             this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button6.Location = new System.Drawing.Point(124, 267);
             this.button6.Name = "button6";
@@ -112,7 +113,6 @@
             this.button6.TabIndex = 6;
             this.button6.Text = "Выговоры";
             this.button6.UseVisualStyleBackColor = true;
-            this.button6.Visible = false;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // Form2

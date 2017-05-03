@@ -13,7 +13,7 @@ using Google.Apis.Util.Store;
 
 namespace MinistryOfHealthDB
 {
-    class Spreadsheets
+    class UsersSheet
     {
 
             public static string ClientSecret = "client_secret.json";

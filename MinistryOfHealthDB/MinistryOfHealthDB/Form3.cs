@@ -18,7 +18,7 @@ namespace MinistryOfHealthDB
         public Form3()
         {
             InitializeComponent();
-            users = Spreadsheets.GetUsers();
+            users = UsersSheet.GetUsers();
             foreach ( User user in users)
             {
                 listBox1.Items.Add(user.Index + " " + user.Nickname);
@@ -42,7 +42,7 @@ namespace MinistryOfHealthDB
             label3.Visible = true;
             foreach (User user in added)
             {
-                Spreadsheets.AddNewUser(Spreadsheets.GetService(Spreadsheets.GetSheetCredentials()), Spreadsheets.SpreadsheetId, user);
+                UsersSheet.AddNewUser(UsersSheet.GetService(UsersSheet.GetSheetCredentials()), UsersSheet.SpreadsheetId, user);
             }
             label3.Visible = false;
         }

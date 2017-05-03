@@ -5,12 +5,16 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Util.Store;
+using System.Net;
+using System.Collections.Specialized;
+using System.Xml.Linq;
 
 namespace ConsoleApplication1
 {
@@ -30,134 +34,22 @@ namespace ConsoleApplication1
 
         static void Main(string[] args)
         {
-
-            UserCredential uc = GetSheetCredentials();
-            SheetsService ss = GetService(uc);
-
-            int height = default(int);
-            List<string[]> list = new List<string[]>();
-            for (int i = 0; i < 6; i ++)
+            string path = Console.ReadLine();
+            using (var w = new WebClient())
             {
-                string[] s = GetFirstCell(ss, String.Format("'Users'!{0}1:{0}", alphabet[i]), SpreadsheetId).Split('|');
-                height = s.Length;
-                list.Add(s);
-            }
-            List<User> users = new List<User>();
-            for (int i = 0; i < height; i++)
-            {
-                User user;
-                string message = "";
-                foreach (string[] s in list)
+                var values = new NameValueCollection
                 {
-                    message += message == "" ? s[i] : "|" + s[i]; 
-                }
-                string[] data = message.Split('|');
-                user = new User(int.Parse(data[0]), data[1], data[2], data[3], int.Parse(data[4]));
-                users.Add(user);
-            }
-            //foreach (User user in users)
-            //{
-            //    Console.WriteLine(user.Index + " Nick: " + user.Nickname + " Password: " + user.Password + " Perms: " + user.Permissions + " Rank:" + user.Rank);
-            //}
-            //Console.ReadKey();
-        }
+                {"image", Convert.ToBase64String(File.ReadAllBytes(path))}
+                };
 
-        public static UserCredential GetSheetCredentials()
-        {
-            using (FileStream stream = new FileStream(ClientSecret, FileMode.Open, FileAccess.Read))
-            {
-                string credPath = Path.Combine(Directory.GetCurrentDirectory(),"sheetsCreds.json");
-
-                return GoogleWebAuthorizationBroker.AuthorizeAsync(GoogleClientSecrets.Load(stream).Secrets, ScopesSheets, "user", CancellationToken.None, new FileDataStore(credPath, true)).Result;
+                w.Headers.Add("Authorization", "Client-ID 56e73ed9f6e02c9");
+                byte[] response = w.UploadValues("https://api.imgur.com/3/upload.xml", values);
+                Console.WriteLine(Regex.Match(XDocument.Load(new MemoryStream(response)).ToString(), @"<!--Dangerous--><p>Change log:([\s\S]*)\<!--Dangerous-->"));
             }
-        }
-        public static SheetsService GetService(UserCredential credential)
-        {
-            return new SheetsService(new BaseClientService.Initializer
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = AppName
+            Console.ReadKey();
+
                 
-            });
-        }
-        public static void FillSpreadsheet(SheetsService service, string spreadsheetId, string [,] data)
-        {
-            List<Request> requests = new List<Request>();
-
-            for (int i = 0; i < data.GetLength(0); i++)
-            {
-                List<CellData> values = new List<CellData>();
-                for (int j = 0; j < data.GetLength(i); j++)
-                {
-                    values.Add(new CellData { UserEnteredValue = new ExtendedValue { StringValue = data[i, j] } });
-
-                }
-                requests.Add(new Request
-                {
-                    UpdateCells = new UpdateCellsRequest
-                    {
-                        Start = new GridCoordinate
-                        {
-                            SheetId = 0,
-                            RowIndex = i,
-                            ColumnIndex = 0
-                        },
-                        Rows = new List<RowData> { new RowData { Values = values } },
-                        Fields = "userEnteredValue"
-                    }
-
-                    }
-                );
             }
-            BatchUpdateSpreadsheetRequest busr = new BatchUpdateSpreadsheetRequest
-            {
-                Requests = requests
-            };
-            service.Spreadsheets.BatchUpdate(busr, spreadsheetId).Execute();
-           
-        }
-        public static string GetFirstCell(SheetsService service, string range, string spreadsheetId) 
-        {
-            SpreadsheetsResource.ValuesResource.GetRequest request = service.Spreadsheets.Values.Get(spreadsheetId, range);
-            ValueRange response = request.Execute();
-
-            string result = null;
-            try
-            {
-                foreach (var value in response.Values)
-                {
-                    result += result == null ? value[0] : "|" + value[0];
-                }
-            }
-            catch (Exception) { result = ""; }
-            
-            return result;
-
-        }
-
-        
-    }
-    public class User
-    {
-        public int Index { get; set; }
-        public string Nickname { get; set; }
-        public string Password { get; set; }
-        public string Permissions { get; set; }
-        public int Rank { get; set; } 
-
-
-
-        public User(int index, string nickname, string password, string permissions, int rank)
-        {
-            Index = index;
-            Nickname = nickname;
-            Password = password;
-            Permissions = permissions;
-            Rank = rank;
-        }
-        public User()
-        {
-
         }
     }
-}
+

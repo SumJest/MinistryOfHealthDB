@@ -27,7 +27,7 @@ namespace MinistryOfHealthDB
         private void button1_Click(object sender, EventArgs e)
         {
             label3.Visible = true;
-            List<User> users = Spreadsheets.GetUsers();
+            List<User> users = UsersSheet.GetUsers();
             List<string> nodes = new List<string>();
             foreach (User user in users)
             {
