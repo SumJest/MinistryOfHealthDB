@@ -25,7 +25,7 @@ namespace MinistryOfHealthDB
             try
             {
 
-                Rebukes.AddNewRebuke(Rebukes.GetService(Rebukes.GetSheetCredentials()), Rebukes.SpreadsheetId, new Rebuke(textBox1.Text, textBox2.Text, dateTimePicker1.Value, textBox3.Text, (this.Owner as Form2).user.Nickname, textBox4.Text.StartsWith("http://imgur.com/") ? textBox4.Text : getImgurUrl(textBox4.Text)));
+                Rebukes.AddNewRebuke(Rebukes.GetService(Rebukes.GetSheetCredentials()), Rebukes.SpreadsheetId, new Rebuke(textBox1.Text, textBox2.Text, dateTimePicker1.Value, textBox3.Text, (this.Owner as Form2).user.Nickname, !File.Exists(textBox4.Text) ? textBox4.Text : getImgurUrl(textBox4.Text)));
                 Console.WriteLine("Успешно отправлено.");
             }
             catch (Exception ex)
