@@ -44,7 +44,7 @@ namespace ConsoleApplication1
 
                 w.Headers.Add("Authorization", "Client-ID 56e73ed9f6e02c9");
                 byte[] response = w.UploadValues("https://api.imgur.com/3/upload.xml", values);
-                Console.WriteLine(Regex.Match(XDocument.Load(new MemoryStream(response)).ToString(), @"<!--Dangerous--><p>Change log:([\s\S]*)\<!--Dangerous-->"));
+                Console.WriteLine("URL: http://imgur.com/" + Regex.Match(XDocument.Load(new MemoryStream(response)).ToString(), @"(?<=<id>)(.*)(?=</id>)"));
             }
             Console.ReadKey();
 

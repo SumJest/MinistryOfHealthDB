@@ -116,10 +116,13 @@
             // 
             // textBox4
             // 
+            this.textBox4.AllowDrop = true;
             this.textBox4.Location = new System.Drawing.Point(166, 135);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(143, 20);
             this.textBox4.TabIndex = 9;
+            this.textBox4.DragDrop += new System.Windows.Forms.DragEventHandler(this.textBox4_DragDrop);
+            this.textBox4.DragEnter += new System.Windows.Forms.DragEventHandler(this.textBox4_DragEnter);
             // 
             // button1
             // 
