@@ -117,10 +117,24 @@ namespace MinistryOfHealthDB
                 service.Spreadsheets.BatchUpdate(busr, spreadsheetId).Execute();
 
             }
-            public static void FillCell(SheetsService service, string spreadsheetId)
+            public static void AddNewUser(SheetsService service, string spreadsheetId, User user)
             {
-
-            }
+                List<Request> requests = new List<Request>();
+                List<CellData> values = new List<CellData>();
+                values.Add(new CellData { UserEnteredValue = new ExtendedValue { StringValue = user.Index.ToString() } });
+                values.Add(new CellData { UserEnteredValue = new ExtendedValue { StringValue = user.Nickname.ToString() } });
+                values.Add(new CellData { UserEnteredValue = new ExtendedValue { StringValue = user.Password.ToString() } });
+                values.Add(new CellData { UserEnteredValue = new ExtendedValue { StringValue = user.Permissions.ToString() } });
+                values.Add(new CellData { UserEnteredValue = new ExtendedValue { StringValue = user.Rank.ToString() } });
+                SpreadsheetsResource.ValuesResource.GetRequest request = service.Spreadsheets.Values.Get(spreadsheetId, "'Users'!A1:A");
+            int index = request.Execute().Values.Count;
+            requests.Add(new Request { UpdateCells = new UpdateCellsRequest {Start = new GridCoordinate{SheetId = 0,RowIndex = index,ColumnIndex = 0},Rows = new List<RowData> { new RowData { Values = values } }, Fields = "userEnteredValue"}});
+            BatchUpdateSpreadsheetRequest busr = new BatchUpdateSpreadsheetRequest
+            {
+                Requests = requests
+            };
+            service.Spreadsheets.BatchUpdate(busr, spreadsheetId).Execute();
+        }
             public static string GetFirstCell(SheetsService service, string range, string spreadsheetId)
             {
                 SpreadsheetsResource.ValuesResource.GetRequest request = service.Spreadsheets.Values.Get(spreadsheetId, range);

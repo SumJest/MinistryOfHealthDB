@@ -13,6 +13,8 @@ namespace MinistryOfHealthDB
     public partial class Form3 : Form
     {
         List<User> users;
+        public List<User> added = new List<User>();
+
         public Form3()
         {
             InitializeComponent();
@@ -27,6 +29,27 @@ namespace MinistryOfHealthDB
         {
             this.Owner.Show();
             this.Hide();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Form4 form = new Form4();
+            form.ShowDialog(this);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            label3.Visible = true;
+            foreach (User user in added)
+            {
+                Spreadsheets.AddNewUser(Spreadsheets.GetService(Spreadsheets.GetSheetCredentials()), Spreadsheets.SpreadsheetId, user);
+            }
+            label3.Visible = false;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }

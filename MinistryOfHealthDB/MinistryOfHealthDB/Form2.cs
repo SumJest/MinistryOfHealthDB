@@ -12,7 +12,7 @@ namespace MinistryOfHealthDB
 {
     public partial class Form2 : Form
     {
-       
+        User user;
         public Form2()
         {
             
@@ -32,7 +32,12 @@ namespace MinistryOfHealthDB
         private void button5_Click(object sender, EventArgs e)
         {
             Form1 form = new Form1();
-            if (form.ShowDialog().Equals(DialogResult.OK)) { label1.Text = label1.Text.Replace("Гость", form.textBox2.Text); button5.Enabled = false; button1.Enabled = true; }
+            if (form.ShowDialog().Equals(DialogResult.OK)) { label1.Text = label1.Text.Replace("Гость", form.textBox2.Text); button5.Enabled = false; button1.Enabled = true; user = form.user; }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

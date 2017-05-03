@@ -23,7 +23,7 @@ namespace MinistryOfHealthDB
         {
             InitializeComponent();
         }
-
+        public User user;
         private void button1_Click(object sender, EventArgs e)
         {
             label3.Visible = true;
@@ -39,7 +39,7 @@ namespace MinistryOfHealthDB
                 MessageBox.Show("Неверное имя пользователя или пароль", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-        
+            user = users[nodes.IndexOf(textBox2.Text + ":" + textBox1.Text)];
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
