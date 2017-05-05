@@ -75,7 +75,7 @@ namespace MinistryOfHealthDB
                     return "http://imgur.com/" + System.Text.RegularExpressions.Regex.Match(System.Xml.Linq.XDocument.Load(new MemoryStream(response)).ToString(), @"(?<=<id>)(.*)(?=</id>)");
                 }
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message, ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error); return null; }
+            catch (Exception ex) { MessageBox.Show(ex.Message, ex.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error); return validpath; }
             }
         }
     }
