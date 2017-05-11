@@ -140,6 +140,7 @@ namespace MinistryOfHealthDB
                 Requests = requests
             };
             service.Spreadsheets.BatchUpdate(busr, spreadsheetId).Execute();
+
         }
         public static DateTime GetNistTime()
         {
